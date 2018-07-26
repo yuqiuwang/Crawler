@@ -11,8 +11,8 @@ import threading
 import time
 
 
-# Ê¹ÓÃÁËrequests¼°lxmlÄ£¿é½øĞĞÊı¾İÅÀÈ¡
-# threadingÄ£¿é½øĞĞ¶àÏß³Ì²Ù×÷
+# ä½¿ç”¨äº†requestsåŠlxmlæ¨¡å—è¿›è¡Œæ•°æ®çˆ¬å–
+# threadingæ¨¡å—è¿›è¡Œå¤šçº¿ç¨‹æ“ä½œ
 
 
 headers = {
@@ -24,15 +24,17 @@ def crawler(my_url):
     response = requests.get(my_url, headers=headers)
     time.sleep(1)
     tree = etree.HTML(response.text)
-    books = tree.xpath('//div[@class="book-infos"]/h2/a/text()')  # Êé¼®Ãû³Æ XPATH
-    links = tree.xpath('//div[@class="book-infos"]/h2/a//@href')  # Á´½Ó XPATH
-    with open("gitbook.txt", 'a+', encoding='utf8') as f:    # ¶àÏß³ÌÍ¬Ê±¶ÁĞ´Í¬Ò»¸öÎÄ¼şÓĞÒ»¶¨¸ÅÂÊ³öÎÊÌâ£¬½ÏÖØÒªµÄÊı¾İ×îºÃĞ´Èë²»Í¬ÎÄ¼ş£¬ÔÙcatµ½Ò»Æğ
+    books = tree.xpath('//div[@class="book-infos"]/h2/a/text()')  # ä¹¦ç±åç§° XPATH
+    links = tree.xpath('//div[@class="book-infos"]/h2/a//@href')  # é“¾æ¥ XPATH
+    with open("gitbook.txt", 'a+', encoding='utf8') as f:
+        # å¤šçº¿ç¨‹åŒæ—¶è¯»å†™åŒä¸€ä¸ªæ–‡ä»¶æœ‰ä¸€å®šæ¦‚ç‡å‡ºé—®é¢˜ï¼Œè¾ƒé‡è¦çš„æ•°æ®æœ€å¥½å†™å…¥ä¸åŒæ–‡ä»¶ï¼Œå†catåˆ°ä¸€èµ·
+        # åæœŸæ–‡ä»¶è¶Šæ¥è¶Šå¤§ï¼ŒåŒæ ·ä¼šé€ æˆæ–‡ä»¶è¯»å†™æ•ˆç‡é™ä½
         for idx, book in enumerate(books):
             f.write(book+"\t"+links[idx]+"\n")
 
 
 def multi_run(start_num, end_num):
-    # Í¨¹ı¶àÏß³ÌÅÀÈ¡½á¹û£¬Ìá¸ßĞ§ÂÊ
+    # é€šè¿‡å¤šçº¿ç¨‹çˆ¬å–ç»“æœï¼Œæé«˜æ•ˆç‡
     threads = []
     for page_num in range(start_num, end_num):
         if page_num == 0:
@@ -48,10 +50,10 @@ def multi_run(start_num, end_num):
 
 
 if __name__ == "__main__":
-    total_page = 117563    # ×ÜÒ³Êı
+    total_page = 117563    # æ€»é¡µæ•°
     start_page = 0
     end_page = 50
-    while end_page < total_page:    # Ã¿Ò»ÂÖÅÀÈ¡50Ò³
+    while end_page < total_page:    # æ¯ä¸€è½®çˆ¬å–50é¡µ
         print("Crawling page %d" % start_page)
         multi_run(start_page, end_page)
         print("%d page Crawling ok!" % (end_page-1))
