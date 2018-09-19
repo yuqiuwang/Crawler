@@ -42,7 +42,8 @@ class ProxiesGet:
     def __call__(self):
         proxies = self.get_proxies()
         return self.test_proxies(self.test_url, proxies)
-
+    
+    """
     def get_proxies(self):
         # 传入需要爬取的IP页数，一页约80个IP
         proxies = []
@@ -54,7 +55,20 @@ class ProxiesGet:
             proxies += proxies
         proxies = ["http://"+proxy for proxy in proxies]
         return proxies
-
+    """
+    
+    def get_proxies(self):
+        proxies = []
+        for page_num in range(0, self.page_nums):
+            response = requests.get("https://www.kuaidaili.com/free/inha/%d" % (page_num+1), headers=self.header)
+            tree = etree.HTML(response.text)
+            ip = tree.xpath('//*[@data-title="IP"]/text()')
+            port = tree.xpath('//*[@data-title="PORT"]/text()')
+            for idx, a_ip in enumerate(ip):
+                proxies.append(a_ip+":"+port[idx])
+        proxies = ["http://"+proxy for proxy in proxies]
+        return proxies
+    
     def test_proxies(self, test_url, proxies):
         # 测试IP是否可用，若不可用则剔除
         failed_proxies = []
