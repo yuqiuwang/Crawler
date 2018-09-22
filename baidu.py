@@ -2,12 +2,14 @@
 """
 Author  : yuqiuwang
 Mail    : yuqiuwang929@gmail.com
-Website : www.yuqiulearn.cn
+Website : https://www.yuqiulearn.cn
 Created : 2018/9/20 14:10
 """
 
 from selenium import webdriver
 # import time
+
+# selenium自动化百度搜索示例
 
 my_url = 'https://www.baidu.com'
 chrome_options = webdriver.ChromeOptions()
